@@ -2,25 +2,22 @@ package io.devexpert.splitbill.data
 
 import android.graphics.Bitmap
 import android.util.Log
-import androidx.camera.core.ImageProxy
 import com.google.firebase.Firebase
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.Schema
 import com.google.firebase.ai.type.content
 import com.google.firebase.ai.type.generationConfig
 import io.devexpert.splitbill.TicketData
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 
 class MLTicketDataSource: TicketDataSource {
     override suspend fun processTicket(image: Bitmap): TicketData {
-        val result = processTicketImage(image)
-        return result.getOrThrow()
+        val ticketData = processTicketImage(image)
+        return ticketData
     }
 }
 
-private suspend fun processTicketImage(bitmap: Bitmap): Result<TicketData> = withContext(Dispatchers.IO) {
+private suspend fun processTicketImage(bitmap: Bitmap): TicketData {
     val json = Json { ignoreUnknownKeys = true }
 
     Log.d("TicketProcessor", "Iniciando procesamiento de imagen...")
@@ -67,5 +64,5 @@ private suspend fun processTicketImage(bitmap: Bitmap): Result<TicketData> = wit
 
     // Parsear el JSON usando kotlinx.serialization
     val ticketData = json.decodeFromString<TicketData>(responseText)
-    Result.success(ticketData)
+    return ticketData
 }

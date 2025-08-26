@@ -1,7 +1,7 @@
 package io.devexpert.splitbill.data
 
 import android.graphics.Bitmap
-import io.devexpert.splitbill.TicketData
+import io.devexpert.splitbill.domain.TicketData
 
 class TicketRepositoryImpl(private val ticketDataSource: TicketDataSource): TicketRepository {
 

@@ -2,8 +2,7 @@ package io.devexpert.splitbill.data
 
 import android.graphics.Bitmap
 import android.util.Log
-import io.devexpert.splitbill.TicketData
-import io.devexpert.splitbill.TicketProcessor
+import io.devexpert.splitbill.domain.TicketData
 import kotlinx.coroutines.delay
 import kotlinx.serialization.json.Json
 

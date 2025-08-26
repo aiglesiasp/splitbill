@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.devexpert.splitbill.data.TicketRepository
+import io.devexpert.splitbill.domain.TicketRepository
 import io.devexpert.splitbill.domain.TicketData
 import io.devexpert.splitbill.domain.TicketItem
 import java.util.Locale

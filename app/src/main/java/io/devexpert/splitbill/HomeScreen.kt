@@ -34,25 +34,26 @@ import androidx.core.content.FileProvider
 import kotlinx.coroutines.launch
 import java.io.File
 import androidx.core.graphics.scale
-import io.devexpert.splitbill.data.TicketRepository
+import io.devexpert.splitbill.domain.ScanCounterRepository
+import io.devexpert.splitbill.domain.TicketRepository
 import io.devexpert.splitbill.domain.TicketData
 
 // El Composable principal de la pantalla de inicio
 @Composable
 fun HomeScreen(
     ticketRepository: TicketRepository,
+    scanCounterRepository: ScanCounterRepository,
     modifier: Modifier = Modifier,
     onTicketProcessed: (TicketData) -> Unit
 ) {
     // Variable local para los escaneos restantes (ahora desde DataStore)
     val context = LocalContext.current
-    val scanCounter = remember { ScanCounter(context) }
-    val scansLeft by scanCounter.scansRemaining.collectAsState(initial = 5)
+    val scansLeft by scanCounterRepository.scansRemaining.collectAsState(initial = 5)
     val isButtonEnabled = scansLeft > 0
 
     // Inicializar o resetear si es necesario al cargar la pantalla
     LaunchedEffect(Unit) {
-        scanCounter.initializeOrResetIfNeeded()
+        scanCounterRepository.initializeOrResetIfNeeded()
     }
 
     // Estado para mostrar el resultado del procesamiento
@@ -88,7 +89,7 @@ fun HomeScreen(
                 coroutineScope.launch {
                     try {
                         val ticketData = ticketRepository.processTicket(resizedBitmap)
-                        scanCounter.decrementScan()
+                        scanCounterRepository.decrementScan()
                         isProcessing = false
                         // Llamar al callback para navegar a la siguiente pantalla
                         onTicketProcessed(ticketData)

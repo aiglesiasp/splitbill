@@ -1,9 +1,8 @@
-package io.devexpert.splitbill.data
+package io.devexpert.splitbill.data.datasources
 
 import android.graphics.Bitmap
 import io.devexpert.splitbill.domain.TicketData
 
-interface TicketRepository {
+interface TicketDataSource {
     suspend fun processTicket(image: Bitmap): TicketData
-    fun getTicketData(): TicketData?
 }

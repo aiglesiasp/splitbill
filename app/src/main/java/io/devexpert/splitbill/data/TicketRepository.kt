@@ -5,4 +5,5 @@ import io.devexpert.splitbill.TicketData
 
 interface TicketRepository {
     suspend fun processTicket(image: Bitmap): TicketData
+    fun getTicketData(): TicketData?
 }

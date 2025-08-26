@@ -12,4 +12,8 @@ class TicketRepositoryImpl(private val ticketDataSource: TicketDataSource): Tick
         _ticketData = result
         return result
     }
+
+    override fun getTicketData(): TicketData? {
+       return _ticketData
+    }
 }

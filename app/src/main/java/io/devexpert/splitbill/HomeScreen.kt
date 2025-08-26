@@ -86,21 +86,19 @@ fun HomeScreen(
                 errorMessage = null
                 // Procesar la imagen con IA
                 coroutineScope.launch {
-                    ticketProcessor.processTicketImage(resizedBitmap)
-                        .onSuccess { ticketData ->
-                            // Decrementar el contador solo si el procesamiento fue exitoso
-                            scanCounter.decrementScan()
-                            isProcessing = false
-                            // Llamar al callback para navegar a la siguiente pantalla
-                            onTicketProcessed(ticketData)
-                        }
-                        .onFailure { error ->
-                            errorMessage = context.getString(
-                                R.string.error_processing_ticket,
-                                error.message ?: ""
-                            )
-                            isProcessing = false
-                        }
+                    try {
+                        val ticketData = ticketRepository.processTicket(resizedBitmap)
+                        scanCounter.decrementScan()
+                        isProcessing = false
+                        // Llamar al callback para navegar a la siguiente pantalla
+                        onTicketProcessed(ticketData)
+                    } catch (error: Exception) {
+                        errorMessage = context.getString(
+                            R.string.error_processing_ticket,
+                            error.message ?: ""
+                        )
+                        isProcessing = false
+                    }
                 }
             } else {
                 errorMessage = context.getString(R.string.could_not_read_image)

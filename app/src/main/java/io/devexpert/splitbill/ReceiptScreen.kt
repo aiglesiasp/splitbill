@@ -26,7 +26,7 @@ fun ReceiptScreen(
     ticketRepository: TicketRepository,
     onBackPressed: () -> Unit
 ) {
-    val ticketData = remember { TicketDataHolder.getTicketData() }
+    val ticketData = remember { ticketRepository.getTicketData() }
 
     if (ticketData == null) {
         // Si no hay datos, mostrar error y botón para volver

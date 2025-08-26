@@ -7,12 +7,19 @@ import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import io.devexpert.splitbill.data.MLTicketDataSource
+import io.devexpert.splitbill.data.MockTicketDataSource
+import io.devexpert.splitbill.data.TicketRepositoryImpl
 import io.devexpert.splitbill.ui.theme.SplitBillTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        val dataSource = if (BuildConfig.DEBUG) MockTicketDataSource() else MLTicketDataSource()
+        val repository = TicketRepositoryImpl(dataSource)
+
         setContent {
             SplitBillTheme {
                 val navController = rememberNavController()
@@ -22,6 +29,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     composable("home") {
                         HomeScreen(
+                            ticketRepository = repository,
                             onTicketProcessed = { ticketData ->
                                 // Guardar los datos en el singleton
                                 TicketDataHolder.setTicketData(ticketData)
@@ -33,6 +41,7 @@ class MainActivity : ComponentActivity() {
 
                     composable("receipt") {
                         ReceiptScreen(
+                            ticketRepository = repository,
                             onBackPressed = {
                                 navController.popBackStack()
                             }

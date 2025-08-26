@@ -34,10 +34,12 @@ import androidx.core.content.FileProvider
 import kotlinx.coroutines.launch
 import java.io.File
 import androidx.core.graphics.scale
+import io.devexpert.splitbill.data.TicketRepository
 
 // El Composable principal de la pantalla de inicio
 @Composable
 fun HomeScreen(
+    ticketRepository: TicketRepository,
     modifier: Modifier = Modifier,
     onTicketProcessed: (TicketData) -> Unit
 ) {

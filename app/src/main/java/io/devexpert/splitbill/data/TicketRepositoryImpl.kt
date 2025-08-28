@@ -8,10 +8,9 @@ class TicketRepositoryImpl(private val ticketDataSource: TicketDataSource): Tick
 
     private var _ticketData: TicketData? = null
 
-    override suspend fun processTicket(image: ByteArray): TicketData {
+    override suspend fun processTicket(image: ByteArray) {
         val result = ticketDataSource.processTicket(image)
         _ticketData = result
-        return result
     }
 
     override fun getTicketData(): TicketData? {

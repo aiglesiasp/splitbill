@@ -88,7 +88,8 @@ fun HomeScreen(
                 // Procesar la imagen con IA
                 coroutineScope.launch {
                     try {
-                        val ticketData = ticketRepository.processTicket(resizedBitmap)
+                        val imageBytes = ImageConverter.toResizedByteArray(resizedBitmap)
+                        val ticketData = ticketRepository.processTicket(imageBytes)
                         scanCounterRepository.decrementScan()
                         isProcessing = false
                         // Llamar al callback para navegar a la siguiente pantalla

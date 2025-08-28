@@ -1,6 +1,5 @@
 package io.devexpert.splitbill.framework
 
-import android.graphics.Bitmap
 import android.util.Log
 import io.devexpert.splitbill.data.datasources.TicketDataSource
 import io.devexpert.splitbill.domain.model.TicketData
@@ -125,11 +124,11 @@ class MockTicketDataSource: TicketDataSource {
         """.trimIndent()
     }
 
-    override suspend fun processTicket(image: Bitmap): TicketData {
+    override suspend fun processTicket(image: ByteArray): TicketData {
         return processTicketImage(image)
     }
 
-    private suspend fun processTicketImage(bitmap: Bitmap): TicketData {
+    private suspend fun processTicketImage(bitmap: ByteArray): TicketData {
         Log.d("TicketProcessor", "Usando datos mock...")
         // Simular un poco de delay para que parezca real
         delay(1500)

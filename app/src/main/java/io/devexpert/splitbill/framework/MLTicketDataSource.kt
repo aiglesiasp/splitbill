@@ -1,6 +1,5 @@
 package io.devexpert.splitbill.framework
 
-import android.graphics.Bitmap
 import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.ai.ai
@@ -12,13 +11,13 @@ import io.devexpert.splitbill.domain.model.TicketData
 import kotlinx.serialization.json.Json
 
 class MLTicketDataSource: TicketDataSource {
-    override suspend fun processTicket(image: Bitmap): TicketData {
+    override suspend fun processTicket(image: ByteArray): TicketData {
         val ticketData = processTicketImage(image)
         return ticketData
     }
 }
 
-private suspend fun processTicketImage(bitmap: Bitmap): TicketData {
+private suspend fun processTicketImage(image: ByteArray): TicketData {
     val json = Json { ignoreUnknownKeys = true }
 
     Log.d("TicketProcessor", "Iniciando procesamiento de imagen...")
@@ -47,7 +46,7 @@ private suspend fun processTicketImage(bitmap: Bitmap): TicketData {
          """.trimIndent()
 
     val inputContent = content {
-        image(bitmap)
+        inlineData(image, "image/jpeg")
         text(prompt)
     }
 

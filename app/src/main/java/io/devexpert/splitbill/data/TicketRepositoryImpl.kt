@@ -1,6 +1,5 @@
 package io.devexpert.splitbill.data
 
-import android.graphics.Bitmap
 import io.devexpert.splitbill.data.datasources.TicketDataSource
 import io.devexpert.splitbill.domain.model.TicketData
 import io.devexpert.splitbill.domain.TicketRepository
@@ -9,7 +8,7 @@ class TicketRepositoryImpl(private val ticketDataSource: TicketDataSource): Tick
 
     private var _ticketData: TicketData? = null
 
-    override suspend fun processTicket(image: Bitmap): TicketData {
+    override suspend fun processTicket(image: ByteArray): TicketData {
         val result = ticketDataSource.processTicket(image)
         _ticketData = result
         return result

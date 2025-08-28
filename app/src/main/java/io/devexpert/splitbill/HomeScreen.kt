@@ -36,7 +36,7 @@ import java.io.File
 import androidx.core.graphics.scale
 import io.devexpert.splitbill.domain.ScanCounterRepository
 import io.devexpert.splitbill.domain.TicketRepository
-import io.devexpert.splitbill.domain.TicketData
+import io.devexpert.splitbill.domain.model.TicketData
 
 // El Composable principal de la pantalla de inicio
 @Composable

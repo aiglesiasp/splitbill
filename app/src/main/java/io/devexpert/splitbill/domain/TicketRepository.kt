@@ -1,6 +1,7 @@
 package io.devexpert.splitbill.domain
 
 import android.graphics.Bitmap
+import io.devexpert.splitbill.domain.model.TicketData
 
 interface TicketRepository {
     suspend fun processTicket(image: Bitmap): TicketData

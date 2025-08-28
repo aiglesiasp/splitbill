@@ -3,7 +3,7 @@ package io.devexpert.splitbill.framework
 import android.graphics.Bitmap
 import android.util.Log
 import io.devexpert.splitbill.data.datasources.TicketDataSource
-import io.devexpert.splitbill.domain.TicketData
+import io.devexpert.splitbill.domain.model.TicketData
 import kotlinx.coroutines.delay
 import kotlinx.serialization.json.Json
 

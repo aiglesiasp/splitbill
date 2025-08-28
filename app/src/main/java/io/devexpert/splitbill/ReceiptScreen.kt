@@ -18,8 +18,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.devexpert.splitbill.domain.TicketRepository
-import io.devexpert.splitbill.domain.TicketData
-import io.devexpert.splitbill.domain.TicketItem
+import io.devexpert.splitbill.domain.model.TicketData
+import io.devexpert.splitbill.domain.model.TicketItem
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)

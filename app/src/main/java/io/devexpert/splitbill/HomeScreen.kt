@@ -37,6 +37,7 @@ import androidx.core.graphics.scale
 import io.devexpert.splitbill.domain.ScanCounterRepository
 import io.devexpert.splitbill.domain.TicketRepository
 import io.devexpert.splitbill.domain.model.TicketData
+import io.devexpert.splitbill.usecase.ProcessTicketUseCase
 
 // El Composable principal de la pantalla de inicio
 @Composable
@@ -44,7 +45,7 @@ fun HomeScreen(
     ticketRepository: TicketRepository,
     scanCounterRepository: ScanCounterRepository,
     modifier: Modifier = Modifier,
-    onTicketProcessed: (TicketData) -> Unit
+    onTicketProcessed: () -> Unit
 ) {
     // Variable local para los escaneos restantes (ahora desde DataStore)
     val context = LocalContext.current
@@ -64,6 +65,8 @@ fun HomeScreen(
     val coroutineScope = rememberCoroutineScope()
 
     var photoUri by remember { mutableStateOf<Uri?>(null) }
+
+    val processTicketUseCase = remember { ProcessTicketUseCase(ticketRepository) }
 
     fun resizeBitmapToMaxWidth(bitmap: Bitmap, maxWidth: Int): Bitmap {
         if (bitmap.width <= maxWidth) return bitmap
@@ -89,11 +92,11 @@ fun HomeScreen(
                 coroutineScope.launch {
                     try {
                         val imageBytes = ImageConverter.toResizedByteArray(resizedBitmap)
-                        val ticketData = ticketRepository.processTicket(imageBytes)
+                        processTicketUseCase(imageBytes)
                         scanCounterRepository.decrementScan()
                         isProcessing = false
                         // Llamar al callback para navegar a la siguiente pantalla
-                        onTicketProcessed(ticketData)
+                        onTicketProcessed()
                     } catch (error: Exception) {
                         errorMessage = context.getString(
                             R.string.error_processing_ticket,

@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
                         HomeScreen(
                             ticketRepository = repository,
                             scanCounterRepository = scanCounterRepository,
-                            onTicketProcessed = { ticketData ->
+                            onTicketProcessed = {
                                 // Navegar a la pantalla de detalle
                                 navController.navigate("receipt")
                             }

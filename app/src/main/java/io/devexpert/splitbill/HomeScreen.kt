@@ -37,6 +37,9 @@ import androidx.core.graphics.scale
 import io.devexpert.splitbill.domain.ScanCounterRepository
 import io.devexpert.splitbill.domain.TicketRepository
 import io.devexpert.splitbill.domain.model.TicketData
+import io.devexpert.splitbill.usecase.DecrementScanCounterUseCase
+import io.devexpert.splitbill.usecase.GetScansRemainingUseCase
+import io.devexpert.splitbill.usecase.InitializeOrResetScanCounterUseCase
 import io.devexpert.splitbill.usecase.ProcessTicketUseCase
 
 // El Composable principal de la pantalla de inicio
@@ -49,12 +52,18 @@ fun HomeScreen(
 ) {
     // Variable local para los escaneos restantes (ahora desde DataStore)
     val context = LocalContext.current
-    val scansLeft by scanCounterRepository.scansRemaining.collectAsState(initial = 5)
+
+    val processTicketUseCase = remember { ProcessTicketUseCase(ticketRepository) }
+    val getScansRemainingUseCase = remember { GetScansRemainingUseCase(scanCounterRepository) }
+    val initializeOrResetScanCounterUseCase = remember { InitializeOrResetScanCounterUseCase(scanCounterRepository) }
+    val decrementScanCounterUseCase = remember { DecrementScanCounterUseCase(scanCounterRepository) }
+
+    val scansLeft = getScansRemainingUseCase().collectAsState(initial = 0).value
     val isButtonEnabled = scansLeft > 0
 
     // Inicializar o resetear si es necesario al cargar la pantalla
     LaunchedEffect(Unit) {
-        scanCounterRepository.initializeOrResetIfNeeded()
+        initializeOrResetScanCounterUseCase()
     }
 
     // Estado para mostrar el resultado del procesamiento
@@ -65,8 +74,6 @@ fun HomeScreen(
     val coroutineScope = rememberCoroutineScope()
 
     var photoUri by remember { mutableStateOf<Uri?>(null) }
-
-    val processTicketUseCase = remember { ProcessTicketUseCase(ticketRepository) }
 
     fun resizeBitmapToMaxWidth(bitmap: Bitmap, maxWidth: Int): Bitmap {
         if (bitmap.width <= maxWidth) return bitmap
@@ -93,7 +100,7 @@ fun HomeScreen(
                     try {
                         val imageBytes = ImageConverter.toResizedByteArray(resizedBitmap)
                         processTicketUseCase(imageBytes)
-                        scanCounterRepository.decrementScan()
+                        decrementScanCounterUseCase()
                         isProcessing = false
                         // Llamar al callback para navegar a la siguiente pantalla
                         onTicketProcessed()
